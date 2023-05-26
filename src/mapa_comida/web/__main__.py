@@ -1,4 +1,4 @@
-from src.crud.web import create_application
+from src.mapa_comida.web import create_application
 from yaml import Loader
 import logging
 import yaml

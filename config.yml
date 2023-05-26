@@ -1,2 +1,10 @@
 app:
-  app_id: mapa-comida-backend
+  app_id: mapa_comida-backend
+mongo:
+  host: localhost
+  port: 27017
+  database: mapa-comida
+  collection: users
+  authentication:
+  user:
+  pass:
