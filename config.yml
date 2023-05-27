@@ -5,6 +5,7 @@ mongo:
   port: 27017
   database: mapa-comida
   collection: users
+  collection_places: places
   authentication:
   user:
   pass:

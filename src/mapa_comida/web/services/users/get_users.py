@@ -12,5 +12,18 @@ def register_routes(app, scouts):
 
         try:
             results = scouts.find_users()
+            
+            for result in results:
+                user = {
+                    "id": str(result["_id"]),
+                    "username": result["username"],
+                    "email": result["email"],
+                    "password": result["password"],
+                    "name": result["name"],
+                    "lastname": result["lastname"]
+                }
+                response.append(user)
+            return response
         except Exception as e:
             raise e
+        
