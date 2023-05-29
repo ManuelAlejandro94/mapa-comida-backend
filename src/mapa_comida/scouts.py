@@ -46,6 +46,21 @@ class Scouts(object):
         objInstance = ObjectId(user_id)
         self.control.delete_one({"_id": objInstance})
 
+    def update_user(self, user):
+        """Actualizar el usuario"""
+        objInstance = ObjectId(user["id"])
+        user_updated = {
+            "username": user["username"],
+            "email": user["email"],
+            "password": user["email"],
+            "name": user["name"],
+            "lastname": user["lastname"]
+        }
+        query = {"_id": objInstance}
+        new_values = {"$set": user_updated}
+
+        self.control.update_one(query, new_values)
+
     #endregion
 
     #region Places collection
