@@ -1,4 +1,5 @@
 from bson.objectid import ObjectId
+import datetime
 
 class Scouts(object):
     def __init__(
@@ -22,12 +23,16 @@ class Scouts(object):
     
     def create_user(self, user):
         """Crea un nuevo usuario"""
+        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
         self.control.insert_one({
             "username": user["username"],
             "email": user["email"],
             "password": user["password"],
             "name": user["name"],
-            "lastname": user["lastname"]
+            "lastname": user["lastname"],
+            "created": date,
+            "last_updated": date,
+            "pass_updated": date
         })
     
     def find_user_id(self, user_id):
@@ -47,20 +52,30 @@ class Scouts(object):
         self.control.delete_one({"_id": objInstance})
 
     def update_user(self, user):
-        """Actualizar el usuario"""
+        """Actualizar nombres y apellidos del usuario"""
+        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
         objInstance = ObjectId(user["id"])
         user_updated = {
-            "username": user["username"],
-            "email": user["email"],
-            "password": user["email"],
             "name": user["name"],
-            "lastname": user["lastname"]
+            "lastname": user["lastname"],
+            "last_updated": date
         }
         query = {"_id": objInstance}
         new_values = {"$set": user_updated}
 
         self.control.update_one(query, new_values)
 
+    #endregion
+
+    #region Sign in
+    def update_password(self, user_pass):
+        """Valida actualización de contraseña"""
+        objInstance = ObjectId(user_pass["id"])
+        pass_updated = {"password": user_pass["password"]}
+        query = {"_id": objInstance}
+        new_values = {"$set": pass_updated}
+        self.control.update_one(query, new_values)
+    
     #endregion
 
     #region Places collection

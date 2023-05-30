@@ -1,6 +1,8 @@
 from flask import request
+from ....web.response import _ResponseEstatus
 
 def register_routes(app, scouts):
+    response_estatus = _ResponseEstatus
 
     @app.route('/user', methods=['POST'])
     def new_user():

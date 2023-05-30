@@ -5,7 +5,6 @@ def register_routes(app, scouts):
     @app.route('/users', methods=['GET'])
     def get_users():
         multimap = request.args if request.method == 'GET' else request.form
-        busqueda_params = multimap.to_dict(flat=True)
 
         response = []
         error = None
@@ -20,7 +19,10 @@ def register_routes(app, scouts):
                     "email": result["email"],
                     "password": result["password"],
                     "name": result["name"],
-                    "lastname": result["lastname"]
+                    "lastname": result["lastname"],
+                    "created": result["created"],
+                    "last_updated": result["last_updated"],
+                    "pass_updated": result["pass_updated"]
                 }
                 response.append(user)
             return response

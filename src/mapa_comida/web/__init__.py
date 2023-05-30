@@ -49,6 +49,8 @@ def create_application(config):
     delete_user.register_routes(app, scouts)
     update_user.register_routes(app, scouts)
     #endregion
+    #region Sign in
+    #endregion
     #region Place
     #endregion
     #endregion
