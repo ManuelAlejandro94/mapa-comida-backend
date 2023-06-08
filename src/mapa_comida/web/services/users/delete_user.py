@@ -1,4 +1,5 @@
 from flask import request
+from ...responses import ResponseErrorBadRequest as BadRequest, ResponseOk
 
 def register_routes(app, scouts):
 
@@ -9,17 +10,11 @@ def register_routes(app, scouts):
         try:
             results = scouts.find_user_id(busqueda_params["id"])
             if results is None:
-                return {
-                    "error_code": -1,
-                    "messsage": "Usuario no encontrado"
-                }, 422
+                return BadRequest.without_results(error=-1, message="Usuario no encontrado")
 
             scouts.delete_user(busqueda_params["id"])
 
-            return {
-                "code": 0,
-                "message": "Usuario eliminado con éxito"
-            }, 200
+            return ResponseOk.without_results(code=0, message="Usuario eliminado con éxito")
         except Exception as e:
             error = {
                 "codigo": str(e.error.value[0].value[0]) + "." + str(e.error.value[1]),

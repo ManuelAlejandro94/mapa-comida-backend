@@ -1,13 +1,12 @@
 from flask import request
+from ...responses import ResponseOk as Ok
 
 def register_routes(app, scouts):
 
     @app.route('/users', methods=['GET'])
     def get_users():
-        multimap = request.args if request.method == 'GET' else request.form
-
+        """Endpoint que obtiene todos los usuarios"""
         response = []
-        error = None
 
         try:
             results = scouts.find_users()
@@ -25,7 +24,11 @@ def register_routes(app, scouts):
                     "pass_updated": result["pass_updated"]
                 }
                 response.append(user)
-            return response
+            return Ok.with_results(
+                code=0,
+                message="Transacción exitosa",
+                result=response
+            )
         except Exception as e:
             raise e
         
