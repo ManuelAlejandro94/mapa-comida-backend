@@ -1,5 +1,6 @@
 from flask import request
 from ...responses import ResponseOk as Ok
+from src.mapa_comida.web.services.users import create_log_id
 
 def register_routes(app, scouts):
 
@@ -7,8 +8,10 @@ def register_routes(app, scouts):
     def get_users():
         """Endpoint que obtiene todos los usuarios"""
         response = []
+        log_id = create_log_id()
 
         try:
+            app.logger.info(f'LOGID: {log_id} - Búsqueda find_users')
             results = scouts.find_users()
             
             for result in results:
@@ -24,11 +27,13 @@ def register_routes(app, scouts):
                     "pass_updated": result["pass_updated"]
                 }
                 response.append(user)
+            app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Transacción exitosa", result=response) - HTTP 200')
             return Ok.with_results(
                 code=0,
                 message="Transacción exitosa",
                 result=response
             )
         except Exception as e:
+            app.logger.error(f'LOGID: {log_id} - Error: {e}')
             raise e
         

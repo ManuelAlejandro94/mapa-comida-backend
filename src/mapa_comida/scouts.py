@@ -78,5 +78,8 @@ class Scouts(object):
     
     #endregion
 
+    #region Spaces collection
+    #endregion
+
     #region Places collection
     #endregion
