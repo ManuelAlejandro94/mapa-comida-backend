@@ -76,6 +76,11 @@ class Scouts(object):
         new_values = {"$set": pass_updated}
         self.control.update_one(query, new_values)
     
+    def find_by_id_password(self, user, user_pass):
+        """Encuentra por usuario y contraseña"""
+        results = self.control.find_one({"username": user, "password": user_pass})
+        return results
+    
     #endregion
 
     #region Spaces collection

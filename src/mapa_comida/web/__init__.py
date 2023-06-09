@@ -2,7 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from pymongo import MongoClient
 import logging.config
-from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user
+from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id
+from src.mapa_comida.web.services.sign_in import update_password, get_user_by_user_and_password
 from src.mapa_comida.scouts import Scouts
 
 
@@ -48,8 +49,11 @@ def create_application(config):
     new_user.register_routes(app, scouts)
     delete_user.register_routes(app, scouts)
     update_user.register_routes(app, scouts)
+    get_user_by_id.register_routes(app, scouts)
     #endregion
     #region Sign in
+    update_password.register_routes(app, scouts)
+    get_user_by_user_and_password.register_routes(app, scouts)
     #endregion
     #region Place
     #endregion
