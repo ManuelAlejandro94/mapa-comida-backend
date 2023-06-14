@@ -80,6 +80,14 @@ class Scouts(object):
         """Encuentra por usuario y contraseña"""
         results = self.control.find_one({"username": user, "password": user_pass})
         return results
+
+    def update_user_email(self, user_id, user_email):
+        """Actualiza correo del usuario"""
+        objInstance = ObjectId(user_id)
+        email_updated = {"email": user_email} 
+        query = {"_id": objInstance}
+        new_values = {"$set": email_updated}
+        self.control.update_one(query, new_values)
     
     #endregion
 
