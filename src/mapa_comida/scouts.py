@@ -15,7 +15,6 @@ class Scouts(object):
 
 
     #region Users collection
-
     def find_users(self):
         """Obtiene todos los usuarios"""
         results = self.control.find({})
@@ -95,4 +94,23 @@ class Scouts(object):
     #endregion
 
     #region Places collection
+    def find_all_places(self):
+        """Obtiene todos los lugares"""
+        results = self.collection_places.find({})
+        return results
+    
+    def find_place_by_id(self, place_id):
+        """Obtiene un lugar por id"""
+        objInstance = ObjectId(place_id)
+        results = self.collection_places.find({"_id": objInstance})
+        return results
+    
+    def create_place(self, place):
+        """Crea un nuevo lugar"""
+        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+
+    def delete_place(self, place_id):
+        """Elimina un lugar"""
+        objInstance = ObjectId(place_id)
+        self.collection_places.delete_one({"_id": objInstance})
     #endregion
