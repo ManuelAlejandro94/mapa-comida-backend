@@ -23,21 +23,20 @@ def create_application(config):
     cors = CORS(app)
 
     mongodb_config =config.get('mongo')
-    client = MongoClient(mongodb_config['host'])
+    client = MongoClient()
 
     if mongodb_config['authentication'] is not None:
-        auth_db = client.get_database(mongodb_config['authentication'])
-
-        auth_db.authenticate(
-            mongodb_config['user'],
-            mongodb_config['pass']
-        )
+        uri = f"mongodb+srv://{mongodb_config['user']}:{mongodb_config['pass']}@{mongodb_config['host']}/"
+        client = MongoClient(uri)
+    else:
+        client = MongoClient(mongodb_config['host'])
 
     database = client.get_database(mongodb_config['database'])
     collection = mongodb_config['collection']
     collection_places = mongodb_config['collection_places']
 
     scouts = Scouts(
+        app=app,
         database=database,
         collection=collection,
         collection_places=collection_places
