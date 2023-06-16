@@ -36,7 +36,6 @@ def create_application(config):
     collection_places = mongodb_config['collection_places']
 
     scouts = Scouts(
-        app=app,
         database=database,
         collection=collection,
         collection_places=collection_places

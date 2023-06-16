@@ -4,12 +4,10 @@ import datetime
 class Scouts(object):
     def __init__(
             self,
-            app,
             database,
             collection,
             collection_places
     ):
-        self.app = app
         self.database = database
 
         self.control = self.database.get_collection(collection)
