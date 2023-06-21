@@ -12,6 +12,7 @@ class Scouts(object):
 
         self.control = self.database.get_collection(collection)
         self.collection_places = self.database.get_collection(collection_places)
+        self.date_string = "%Y-%m-%d %H:%M:%S UTC"
 
 
     #region Users collection
@@ -22,7 +23,7 @@ class Scouts(object):
     
     def create_user(self, user):
         """Crea un nuevo usuario"""
-        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        date = datetime.datetime.utcnow().strftime(self.date_string)
         self.control.insert_one({
             "username": user["username"],
             "email": user["email"],
@@ -52,7 +53,7 @@ class Scouts(object):
 
     def update_user(self, user):
         """Actualizar nombres y apellidos del usuario"""
-        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        date = datetime.datetime.utcnow().strftime(self.date_string)
         objInstance = ObjectId(user["id"])
         user_updated = {
             "name": user["name"],
@@ -107,7 +108,7 @@ class Scouts(object):
     
     def create_place(self, place):
         """Crea un nuevo lugar"""
-        date = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
+        date = datetime.datetime.utcnow().strftime(self.date_string)
 
     def delete_place(self, place_id):
         """Elimina un lugar"""

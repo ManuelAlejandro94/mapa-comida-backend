@@ -20,16 +20,13 @@ def create_application(config):
     logging_config(config.get('logging'))
 
     app = Flask(__name__)
-    cors = CORS(app)
 
     mongodb_config =config.get('mongo')
-    client = MongoClient()
+    client = MongoClient(mongodb_config['host'])
 
     if mongodb_config['authentication'] is not None:
         uri = f"mongodb+srv://{mongodb_config['user']}:{mongodb_config['pass']}@{mongodb_config['host']}/"
         client = MongoClient(uri)
-    else:
-        client = MongoClient(mongodb_config['host'])
 
     database = client.get_database(mongodb_config['database'])
     collection = mongodb_config['collection']

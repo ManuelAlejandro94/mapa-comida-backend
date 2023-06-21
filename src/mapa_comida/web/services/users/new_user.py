@@ -32,21 +32,11 @@ def register_routes(app, scouts):
                 app.logger.info(f'LOGID: {log_id} - BadRequest(error=-2, message="Correo registrado con anterioridad") - HTTP 422')
                 return BadRequest.without_results(-2, "Correo registrado con anterioridad")
             
-            #salt = bcrypt.gensalt()
-            #hashed = bcrypt.hashpw(busqueda_params["password"])
             app.logger.info(f'LOGID: {log_id} - Crea create_user: {busqueda_params}')
             scouts.create_user(busqueda_params)
 
             app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Usuario agregadi con éxito") - HTTP 201')
             return Ok.without_results(0, "Usuario agregado con éxito")
-        except Exception as e:
-            app.logger.error(f'LOGID: {log_id} - Error: {e}')
-            error = {
-                "codigo": str(e.error.value[0].value[0]) + "." + str(e.error.value[1]),
-                "detalle": str(e.detalle),
-                "mensaje": str(e.args[0])
-            }
-            raise error
         except Exception as e:
             app.logger.error(f'LOGID: {log_id} - Error: {e}')
             raise e

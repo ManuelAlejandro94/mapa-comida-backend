@@ -1,13 +1,15 @@
 class ResponseOk:
-
-    def without_results(code, message):
+    
+    @classmethod
+    def without_results(cls, code, message):
         response = {
             "code": code,
             "message": message
         }, 200
         return response
     
-    def with_results(code, message, result):
+    @classmethod
+    def with_results(cls, code, message, result):
         response = {
             "code": code,
             "message": message,
@@ -17,7 +19,8 @@ class ResponseOk:
 
 class CreatedOk:
     
-    def without_results(code, message):
+    @classmethod
+    def without_results(cls, code, message):
         response = {
             "code": code,
             "message": message
@@ -26,14 +29,16 @@ class CreatedOk:
 
 class ResponseErrorBadRequest:
 
-    def without_results(error, message):
+    @classmethod
+    def without_results(cls, error, message):
         response = {
             "error_code": error,
             "message": message
         }, 422
         return response
     
-    def with_results(error, message, details):
+    @classmethod
+    def with_results(cls, error, message, details):
         response = {
             "error_code": error,
             "message": message,

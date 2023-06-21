@@ -37,12 +37,4 @@ def register_routes(app, scouts):
                 return Ok.without_results(code=0, message="Usuario actualizado correctamente")
         except Exception as e:
             app.logger.error(f'LOGID: {log_id} - Error: {e}')
-            error = {
-                "codigo": str(e.error.value[0].value[0]) + "." + str(e.error.value[1]),
-                "detalle": str(e.detalle),
-                "mensaje": str(e.args[0])
-            }
-            raise error
-        except Exception as e:
-            app.logger.error(f'LOGID: {log_id} - Error: {e}')
             raise e

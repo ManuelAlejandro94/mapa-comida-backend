@@ -11,7 +11,7 @@ def register_routes(app, scouts):
         log_id = create_log_id()
         app.logger.info(f'LOGID: {log_id} - Parámetros de entrada: {busqueda_params}')
         dif_params = validate_params(params=params, request=busqueda_params)
-        id = busqueda_params["id"]
+        param_id = busqueda_params["id"]
         email = busqueda_params["email"]
         if dif_params:
             app.logger.info(f'LOGID: {log_id} - BadRequest(error=-1, message="Parámetros faltantes en la petición", details="Campos: {dif_params}") - HTTP 422')
@@ -37,17 +37,9 @@ def register_routes(app, scouts):
                     return BadRequest.without_results(-2, "Correo registrado con anterioridad")
                 #Actualizar email
                 app.logger.info(f'LOGID: {log_id} - Actualización update_user_email: {busqueda_params}')
-                scouts.update_user_email(user_id=id, user_email = email)
+                scouts.update_user_email(user_id=param_id, user_email = email)
                 app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Email actualizado correctamente") - HTTP 200')
                 return Ok.without_results(code=0, message="Email actualizado correctamente")
-        except Exception as e:
-            app.logger.error(f'LOGID: {log_id} - Error: {e}')
-            error = {
-                "codigo": str(e.error.value[0].value[0]) + "." + str(e.error.value[1]),
-                "detalle": str(e.detalle),
-                "mensaje": str(e.args[0])
-            }
-            raise error
         except Exception as e:
             app.logger.error(f'LOGID: {log_id} - Error: {e}')
             raise e
