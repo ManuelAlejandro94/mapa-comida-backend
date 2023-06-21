@@ -92,9 +92,34 @@ class Scouts(object):
     #endregion
 
     #region Spaces collection
+    """
+    Mongo collection
+    {
+        "_id": ObjectId(372832890),
+        "name": "Nombre del espacio"
+        "owner": Id_del_propietario,
+        "users": [IdUsuario1, IdUsuario2]
+    }
+    """
     #endregion
 
     #region Places collection
+    """
+    Mongo collection:
+    {
+        "_id": ObjectId(372832890),
+        "name": "Nombre del lugar",
+        "created_by": "Id_del_creador",
+        "cordenates": {
+            "latitud": "latitude",
+            "longitud": "longitud"
+        },
+        "address": "direccion"
+        "created": "dateCreated",
+        "updated": "dateUpdated"
+    }
+    """
+
     def find_all_places(self):
         """Obtiene todos los lugares"""
         results = self.collection_places.find({})
@@ -103,15 +128,35 @@ class Scouts(object):
     def find_place_by_id(self, place_id):
         """Obtiene un lugar por id"""
         objInstance = ObjectId(place_id)
-        results = self.collection_places.find({"_id": objInstance})
+        results = self.collection_places.find_one({"_id": objInstance})
         return results
     
-    def create_place(self, place):
+    def create_place(self, place_obj):
         """Crea un nuevo lugar"""
         date = datetime.datetime.utcnow().strftime(self.date_string)
+        place = {
+            "name": place_obj["name"],
+            "created_by": place_obj["created_by"],
+            "cordenates": {
+                "latitud": place_obj["cordenates"]["latitud"],
+                "longitud": place_obj["cordenates"]["longitud"]
+            },
+            "address": place_obj["address"],
+            "created": date,
+            "updated": date
+        }
+        self.collection_places.insert_one(place)
 
     def delete_place(self, place_id):
         """Elimina un lugar"""
         objInstance = ObjectId(place_id)
         self.collection_places.delete_one({"_id": objInstance})
+
+    def find_place_by_cordenates(self, cordenates):
+        """Encuentra un lugar por coordenadas"""
+        latitud = cordenates["latitud"]
+        longitud = cordenates["longitud"]
+        query = {"cordenates.latitud":latitud, "cordenates.longitud":longitud}
+        places = self.collection_places.find(query)
+        return places
     #endregion

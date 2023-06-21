@@ -4,6 +4,7 @@ from pymongo import MongoClient
 import logging.config
 from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id
 from src.mapa_comida.web.services.sign_in import update_password, get_user_by_user_and_password, update_email
+from src.mapa_comida.web.services.places import new_place, get_places, get_place_by_id
 from src.mapa_comida.scouts import Scouts
 
 
@@ -52,6 +53,9 @@ def create_application(config):
     update_email.register_routes(app, scouts)
     #endregion
     #region Place
+    get_places.register_routes(app, scouts)
+    new_place.register_routes(app, scouts)
+    get_place_by_id.register_routes(app, scouts)
     #endregion
     #endregion
 
