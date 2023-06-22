@@ -148,6 +148,16 @@ class Scouts(object):
         objInstance = ObjectId(id_space)
         results = self.collection_spaces.find_one({"_id": objInstance})
         return results
+    
+    def find_spaces_by_owner(self, id_owner):
+        """Obtiene espacios por propietario"""
+        results = self.collection_spaces.find({"owner": id_owner})
+        return results
+    
+    def find_spaces_member(self, id_member):
+        """Obtiene espacios en los que se sea miembro"""
+        results = self.collection_spaces.find({"users": id_member})
+        return results
 
 
 

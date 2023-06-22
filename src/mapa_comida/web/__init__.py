@@ -5,7 +5,7 @@ import logging.config
 from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id
 from src.mapa_comida.web.services.sign_in import update_password, get_user_by_user_and_password, update_email
 from src.mapa_comida.web.services.places import new_place, get_places, get_place_by_id, update_place, delete_place
-from src.mapa_comida.web.services.spaces import get_spaces, new_space, update_space, delete_space
+from src.mapa_comida.web.services.spaces import get_spaces, new_space, update_space, delete_space, get_space_by_id, get_spaces_by_owner, get_spaces_member
 from src.mapa_comida.scouts import Scouts
 
 
@@ -67,6 +67,9 @@ def create_application(config):
     new_space.register_routes(app, scouts)
     update_space.register_routes(app, scouts)
     delete_space.register_routes(app, scouts)
+    get_space_by_id.register_routes(app, scouts)
+    get_spaces_by_owner.register_routes(app, scouts)
+    get_spaces_member.register_routes(app, scouts)
     #endregion
     #endregion
 
