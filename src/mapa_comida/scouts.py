@@ -6,12 +6,14 @@ class Scouts(object):
             self,
             database,
             collection,
-            collection_places
+            collection_places,
+            collection_spaces
     ):
         self.database = database
 
         self.control = self.database.get_collection(collection)
         self.collection_places = self.database.get_collection(collection_places)
+        self.collection_spaces = self.database.get_collection(collection_spaces)
         self.date_string = "%Y-%m-%d %H:%M:%S UTC"
 
 
@@ -98,23 +100,71 @@ class Scouts(object):
         "_id": ObjectId(372832890),
         "name": "Nombre del espacio"
         "owner": Id_del_propietario,
-        "users": [IdUsuario1, IdUsuario2]
+        "users": [IdUsuario1, IdUsuario2],
+        "places": ["idPlace1", "idPlace2"],
+        "created": "fechaDeCreacion",
+        "updated": "fechaDeActualizacion"
     }
     """
+    def create_space(self, space):
+        """Crea un nuevo espacio"""
+        date = datetime.datetime.utcnow().strftime(self.date_string)
+        self.collection_spaces.insert_one({
+            "name": space["name"],
+            "owner": space["owner"],
+            "users": space["users"],
+            "places": space["places"],
+            "created": date,
+            "updated": date
+        })
+    
+    def find_spaces(self):
+        """Encontrar todos los espacios"""
+        results = self.collection_spaces.find({})
+        return results
+    
+    def update_space(self, space):
+        """Actualizar un espacio"""
+        date = datetime.datetime.utcnow().strftime(self.date_string)
+        objInstance = ObjectId(space["id"])
+        space_updated = {
+            "name": space["name"],
+            "users": space["users"],
+            "places": space["places"],
+            "updated": date
+        }
+        query = {"_id": objInstance}
+        new_values = {"$set": space_updated}
+
+        self.collection_spaces.update_one(query, new_values)
+    
+    def delete_space(self, id_space):
+        """Eliminar un espacio"""
+        objInstance = ObjectId(id_space)
+        self.collection_spaces.delete_one({"_id": objInstance})
+    
+    def find_space_by_id(self, id_space):
+        """Obtener un espacio por id"""
+        objInstance = ObjectId(id_space)
+        results = self.collection_spaces.find_one({"_id": objInstance})
+        return results
+
+
+
     #endregion
 
     #region Places collection
     """
-    Mongo collection:
+    Mongo collection
     {
         "_id": ObjectId(372832890),
         "name": "Nombre del lugar",
         "created_by": "Id_del_creador",
         "cordenates": {
-            "latitud": "latitude",
+            "latitud": "latitud",
             "longitud": "longitud"
         },
-        "address": "direccion"
+        "address": "direccion",
         "created": "dateCreated",
         "updated": "dateUpdated"
     }

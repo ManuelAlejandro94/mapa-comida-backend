@@ -35,7 +35,7 @@ def register_routes(app, scouts):
             app.logger.info(f'LOGID: {log_id} - Crea create_user: {busqueda_params}')
             scouts.create_user(busqueda_params)
 
-            app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Usuario agregadi con éxito") - HTTP 201')
+            app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Usuario agregado con éxito") - HTTP 201')
             return Ok.without_results(0, "Usuario agregado con éxito")
         except Exception as e:
             app.logger.error(f'LOGID: {log_id} - Error: {e}')

@@ -5,6 +5,7 @@ import logging.config
 from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id
 from src.mapa_comida.web.services.sign_in import update_password, get_user_by_user_and_password, update_email
 from src.mapa_comida.web.services.places import new_place, get_places, get_place_by_id, update_place, delete_place
+from src.mapa_comida.web.services.spaces import get_spaces, new_space, update_space, delete_space
 from src.mapa_comida.scouts import Scouts
 
 
@@ -32,11 +33,13 @@ def create_application(config):
     database = client.get_database(mongodb_config['database'])
     collection = mongodb_config['collection']
     collection_places = mongodb_config['collection_places']
+    collection_spaces = mongodb_config['collection_spaces']
 
     scouts = Scouts(
         database=database,
         collection=collection,
-        collection_places=collection_places
+        collection_places=collection_places,
+        collection_spaces=collection_spaces
     )
 
     #region Endpoints
@@ -58,6 +61,12 @@ def create_application(config):
     get_place_by_id.register_routes(app, scouts)
     update_place.register_routes(app, scouts)
     delete_place.register_routes(app, scouts)
+    #endregion
+    #region Space
+    get_spaces.register_routes(app, scouts)
+    new_space.register_routes(app, scouts)
+    update_space.register_routes(app, scouts)
+    delete_space.register_routes(app, scouts)
     #endregion
     #endregion
 
