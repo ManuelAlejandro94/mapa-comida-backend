@@ -6,6 +6,7 @@ mongo:
   database: mapa-comida
   collection: users
   collection_places: places
+  collection_spaces: spaces
   authentication:
   user:
   pass:
