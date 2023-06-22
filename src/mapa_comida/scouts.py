@@ -159,4 +159,19 @@ class Scouts(object):
         query = {"cordenates.latitud":latitud, "cordenates.longitud":longitud}
         places = self.collection_places.find(query)
         return places
+    
+    def update_place(self, place):
+        """Se actualiza lugar"""
+        date = datetime.datetime.utcnow().strftime(self.date_string)
+        objInstance = ObjectId(place["id"])
+        place_updated = {
+            "name": place["name"],
+            "address": place["address"],
+            "cordenates": place["cordenates"],
+            "updated": date
+        }
+        query = {"_id": objInstance}
+        new_values = {"$set": place_updated}
+
+        self.collection_places.update_one(query, new_values)
     #endregion
