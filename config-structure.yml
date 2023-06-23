@@ -23,4 +23,4 @@ logging:
       formatter: default
   root:
     level: INFO
-    habdlers: [wsgi]
+    handlers: [wsgi]
