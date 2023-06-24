@@ -1,6 +1,7 @@
 from flask import request
-from ..users import validate_params, create_log_id
-from ...responses import ResponseErrorBadRequest as BadRequest, CreatedOk as Ok
+from src.mapa_comida.web.services.users import validate_params, create_log_id
+from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, CreatedOk as Ok, ResponseErrorConflict as Conflict
+import hashlib
 
 def register_routes(app, scouts):
 
@@ -30,8 +31,9 @@ def register_routes(app, scouts):
             results = scouts.find_user_by_email(busqueda_params["email"])
             if results is not None:
                 app.logger.info(f'LOGID: {log_id} - BadRequest(error=-2, message="Correo registrado con anterioridad") - HTTP 422')
-                return BadRequest.without_results(-2, "Correo registrado con anterioridad")
-            
+                return Conflict.without_results(-2, "Correo registrado con anterioridad")
+
+            busqueda_params["password"] = hashlib.sha512(busqueda_params["password"].encode("utf-8")).hexdigest()
             app.logger.info(f'LOGID: {log_id} - Crea create_user: {busqueda_params}')
             scouts.create_user(busqueda_params)
 

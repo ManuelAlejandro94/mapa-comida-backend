@@ -17,6 +17,7 @@ class ResponseOk:
         }, 200
         return response
 
+
 class CreatedOk:
     
     @classmethod
@@ -26,6 +27,7 @@ class CreatedOk:
             "message": message
         }, 201
         return response
+
 
 class ResponseErrorBadRequest:
 
@@ -44,4 +46,44 @@ class ResponseErrorBadRequest:
             "message": message,
             "details": details
         }, 422
+        return response
+
+
+class ResponseErrorConflict:
+
+    @classmethod
+    def without_results(cls, error, message):
+        response = {
+            "error_code": error,
+            "message": message
+        }, 409
+        return response
+
+    @classmethod
+    def with_results(cls, error, message, details):
+        response = {
+            "error_code": error,
+            "message": message,
+            "details": details
+        }, 409
+        return response
+
+
+class ResponseErrorAuthentication:
+
+    @classmethod
+    def without_results(cls, error, message):
+        response = {
+            "error_code": error,
+            "message": message
+        }, 401
+        return response
+
+    @classmethod
+    def with_results(cls, error, message, details):
+        response = {
+            "error_code": error,
+            "message": message,
+            "details": details
+        }, 401
         return response

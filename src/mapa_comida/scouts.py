@@ -90,6 +90,11 @@ class Scouts(object):
         query = {"_id": objInstance}
         new_values = {"$set": email_updated}
         self.control.update_one(query, new_values)
+
+    def find_user_by_username(self, username):
+        """Obtiene usuario por su nombre de usuario"""
+        results = self.control.find_one({"username": username})
+        return results
     
     #endregion
 

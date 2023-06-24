@@ -10,7 +10,9 @@ mongo:
   authentication:
   user:
   pass:
-SECRET-KEY: xxx
+token:
+  SECRET-KEY: xxx
+  EXPIRES: days
 logging:
   version: 1
   formatters:
