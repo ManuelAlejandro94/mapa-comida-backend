@@ -1,6 +1,6 @@
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from src.mapa_comida.web.services.sign_in import create_log_id
+from src.mapa_comida.web.services.protected.users import create_log_id
 from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, ResponseOk as Ok
 
 

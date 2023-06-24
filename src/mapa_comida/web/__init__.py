@@ -1,11 +1,11 @@
 import datetime
 
 from flask import Flask
-from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from pymongo import MongoClient
 import logging.config
-from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id, get_user_by_username
+from src.mapa_comida.web.services.users import get_users, new_user, delete_user, update_user, get_user_by_id
+from src.mapa_comida.web.services.protected.users import get_user_by_username, update_user_protected
 from src.mapa_comida.web.services.sign_in import update_password, get_user_by_user_and_password, update_email
 from src.mapa_comida.web.services.places import new_place, get_places, get_place_by_id, update_place, delete_place
 from src.mapa_comida.web.services.spaces import get_spaces, new_space, update_space, delete_space, get_space_by_id, \
@@ -61,7 +61,6 @@ def create_application(config):
     delete_user.register_routes(app, scouts)
     update_user.register_routes(app, scouts)
     get_user_by_id.register_routes(app, scouts)
-    get_user_by_username.register_routes(app, scouts)
     # endregion
     # region Sign in
     update_password.register_routes(app, scouts)
@@ -86,6 +85,13 @@ def create_application(config):
     # endregion
     # region Tokenizer
     login.register_routes(app, scouts)
+    # endregion
+    # endregion
+
+    # region Protected
+    # region User
+    get_user_by_username.register_routes(app, scouts)
+    update_user_protected.register_routes(app, scouts)
     # endregion
     # endregion
 
