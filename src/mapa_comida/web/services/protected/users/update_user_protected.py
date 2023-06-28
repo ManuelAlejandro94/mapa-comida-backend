@@ -1,6 +1,7 @@
 from flask import request
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, ResponseOk as Ok, ResponseErrorConflict as Conflict
+from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, ResponseOk as Ok, \
+    ResponseErrorAuthentication as ErrorAuth
 from src.mapa_comida.web.services.protected.users import validate_params, create_log_id
 
 
@@ -31,8 +32,8 @@ def register_routes(app, scouts):
             app.logger.info(f'LOGID: {log_id} - Búsqueda find_user_by_username: {current_user}')
             results = scouts.find_user_by_username(current_user)
             if results is None:
-                app.logger.info(f'LOGID: {log_id} - Conflict(error=-1, message="Usuario no encontrado") - HTTP 409')
-                return Conflict.without_results(error=-1, message="Usuario no encontrado")
+                app.logger.info(f'LOGID: {log_id} - ErrorAuth(error=-1, message="Usuario no encontrado") - HTTP 401')
+                return ErrorAuth.without_results(error=-1, message="Usuario no encontrado")
             else:
                 update_params = {
                     "id": str(results["_id"]),
