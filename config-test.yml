@@ -1,0 +1,27 @@
+app:
+  app_id: mapa_comida-backend
+mongo:
+  host: mapa-comida.pqzgbfj.mongodb.net
+  database: mapa-comida-db
+  collection: users
+  collection_places: places
+  collection_spaces: spaces
+  authentication: SCRAM
+  user: mapa-comida-userdb
+  pass: MXmziLYmLzgT20kP
+token:
+  SECRET-KEY: v3V1u2fmaL3QhHtjvnnjsnDkDyN3kbeobutQLzPoH07q2ECEg9
+  EXPIRES: 1
+logging:
+  version: 1
+  formatters:
+    default:
+      format: '[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+  handlers:
+    wsgi:
+      class: logging.StreamHandler
+      stream: ext://flask.logging.wsgi_errors_stream
+      formatter: default
+  root:
+    level: INFO
+    handlers: [wsgi]
