@@ -1,3 +1,5 @@
+import hashlib
+
 from flask import request
 from src.mapa_comida.web.services.sign_in import validate_params, create_log_id
 from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, ResponseOk as Ok
@@ -29,6 +31,7 @@ def register_routes(app, scouts):
                 return BadRequest.without_results(error=-2, message="Usuario no encontrado")
             else:
                 busqueda_params["id"] = id
+                busqueda_params["password"] = hashlib.sha512(busqueda_params["password"].encode("utf-8")).hexdigest()
                 app.logger.info(f'LOGID: {log_id} - Actualización update_password: {busqueda_params}')
                 scouts.update_password(busqueda_params)
                 app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Contraseña actualizada correctamente") - HTTP 200')

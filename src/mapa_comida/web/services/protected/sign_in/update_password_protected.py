@@ -1,25 +1,23 @@
+import hashlib
 from flask import request
-from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from src.mapa_comida.web.services.protected.sign_in import validate_params, create_log_id
 from src.mapa_comida.web.responses import ResponseErrorBadRequest as BadRequest, ResponseOk as Ok, \
     ResponseErrorAuthentication as ErrorAuth
-from src.mapa_comida.web.services.protected.users import validate_params, create_log_id
-
 
 def register_routes(app, scouts):
 
-    @app.route('/user/update-user-names', methods=['PUT'])
+    @app.route('/sign-in/password/protected', methods=['PUT'])
     @jwt_required()
-    def update_user_protected():
+    def update_password_protected():
         current_user = get_jwt_identity()
         busqueda_params = request.get_json()
         params = [
-            "name",
-            "lastname"
+            "password"
         ]
         log_id = create_log_id()
         app.logger.info(f'LOGID: {log_id} - Parámetros de entrada: {busqueda_params}')
         dif_params = validate_params(params=params, request=busqueda_params)
-
         if dif_params:
             app.logger.info(f'LOGID: {log_id} - BadRequest(error=-1, message="Parámetros faltantes en la petición", details="Campos: {dif_params}") - HTTP 422')
             return BadRequest.with_results(
@@ -35,15 +33,14 @@ def register_routes(app, scouts):
                 app.logger.info(f'LOGID: {log_id} - ErrorAuth(error=-1, message="Usuario no encontrado") - HTTP 401')
                 return ErrorAuth.without_results(error=-1, message="Usuario no encontrado")
             else:
-                update_params = {
+                password_params = {
                     "id": str(results["_id"]),
-                    "name": busqueda_params["name"],
-                    "lastname": busqueda_params["lastname"]
+                    "password": hashlib.sha512(busqueda_params["password"].encode("utf-8")).hexdigest()
                 }
-                app.logger.info(f'LOGID: {log_id} - Actualización update_user: {update_params}')
-                scouts.update_user(update_params)
-                app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Usuario actualizado correctamente") - HTTP 200')
-                return Ok.without_results(code=0, message="Usuario actualizado correctamente")
+                app.logger.info(f'LOGID: {log_id} - Actualización update_password: {password_params}')
+                scouts.update_password(password_params)
+                app.logger.info(f'LOGID: {log_id} - OK(code=0, message="Contraseña actualizada correctamente") - HTTP 200')
+                return Ok.without_results(code=0, message="Contraseña actualizada correctamente")
         except Exception as e:
             app.logger.error(f'LOGID: {log_id} - Error: {e}')
             raise e

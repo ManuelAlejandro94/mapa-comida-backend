@@ -11,6 +11,10 @@ from src.mapa_comida.web.services.places import new_place, get_places, get_place
 from src.mapa_comida.web.services.spaces import get_spaces, new_space, update_space, delete_space, get_space_by_id, \
     get_spaces_by_owner, get_spaces_member
 from src.mapa_comida.web.services.tokenizer import login
+from src.mapa_comida.web.services.protected.sign_in import update_email_protected, update_password_protected
+from src.mapa_comida.web.services.protected.places import new_place_protected, get_my_places_protected
+from src.mapa_comida.web.services.protected.spaces import new_space_protected, get_spaces_by_owner_protected, \
+    get_spaces_member_protected
 from src.mapa_comida.scouts import Scouts
 
 
@@ -92,6 +96,19 @@ def create_application(config):
     # region User
     get_user_by_username.register_routes(app, scouts)
     update_user_protected.register_routes(app, scouts)
+    # endregion
+    # region Sign in
+    update_email_protected.register_routes(app, scouts)
+    update_password_protected.register_routes(app, scouts)
+    # endregion
+    # region Places
+    new_place_protected.register_routes(app, scouts)
+    get_my_places_protected.register_routes(app, scouts)
+    # endregion
+    # region Spaces
+    new_space_protected.register_routes(app, scouts)
+    get_spaces_by_owner_protected.register_routes(app, scouts)
+    get_spaces_member_protected.register_routes(app, scouts)
     # endregion
     # endregion
 

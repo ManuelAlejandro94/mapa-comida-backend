@@ -239,4 +239,8 @@ class Scouts(object):
         new_values = {"$set": place_updated}
 
         self.collection_places.update_one(query, new_values)
+
+    def find_place_by_owner(self, id_owner):
+        results = self.collection_places.find({"created_by": id_owner})
+        return results
     #endregion
